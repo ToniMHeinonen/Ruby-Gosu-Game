@@ -4,6 +4,7 @@ class Player
     WIDTH = 42
     HEIGHT = 50
     DRAW_Z = 5
+    SPEED = 5
 
     def initialize(x, y)
         @x, @y = x, y
@@ -20,7 +21,23 @@ class Player
         @curImage.draw(@x, @y, DRAW_Z)
     end
 
-    def update
+    def update()
+        movePlayer()
+    end
+
+    def movePlayer
+        moveX = 0
+        # Gosu.button_down? needs to be called every frame for movement
+        moveX -= SPEED if Gosu.button_down? Gosu::KB_LEFT
+        moveX += SPEED if Gosu.button_down? Gosu::KB_RIGHT
         
+        # Change direction based on movement
+        if moveX > 0
+            @dir = :right
+        elsif moveX < 0
+            @dir = :left
+        end
+
+        @x += moveX
     end
 end

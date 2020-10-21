@@ -21,7 +21,7 @@ class Stage1 < Gosu::Window
     end
 
     def update
-        
+        @player.update
     end
 
     def draw
