@@ -18,13 +18,25 @@ class Player
     end
 
     def draw
-        @curImage.draw(@x, @y, DRAW_Z)
+        # Flip vertically when facing to the left
+        # Add offset so the image does not jump around when turning
+        if @dir == :left
+            offsetX = -(WIDTH / 2)
+            factor = 1.0
+        else
+            offsetX = WIDTH / 2
+            factor = -1.0
+        end
+        
+        # No idea what factor does but it makes the image not jump around
+        @curImage.draw(@x + offsetX, @y, DRAW_Z, factor, 1.0)
     end
 
     def update()
         movePlayer()
     end
 
+    # Move the player
     def movePlayer
         moveX = 0
         # Gosu.button_down? needs to be called every frame for movement
@@ -39,5 +51,17 @@ class Player
         end
 
         @x += moveX
+
+        controlAnimation(moveX)
+    end
+
+    # Select image depending on action
+    def controlAnimation(moveX)
+        if (moveX == 0)
+            @curImage = @standing
+        else
+            # Loop between 2 moving animations
+            @curImage = (Gosu.milliseconds / 175 % 2 == 0) ? @walk1 : @walk2
+        end
     end
 end
