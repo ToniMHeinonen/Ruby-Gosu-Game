@@ -2,6 +2,8 @@
 
 require "gosu"
 
+require_relative "../objects/player"
+
 class Stage1 < Gosu::Window
     # Size of the window
     WIDTH = 1024
@@ -15,6 +17,7 @@ class Stage1 < Gosu::Window
 
         # Load assets
         @background = Gosu::Image.new("../media/background.png", tileable: true)
+        @player = Player.new(0, 0)
     end
 
     def update
@@ -24,6 +27,9 @@ class Stage1 < Gosu::Window
     def draw
         # Draw background starting from corner
         @background.draw 0, 0, 0
+
+        # Draw player in it's position
+        @player.draw
     end
 end
 
