@@ -57,4 +57,11 @@ class Map
             end
         end
     end
+
+    # Checks if there is a solid tile at the position
+    def solidTileAt?(x, y)
+        # If pixel is at the bottom of the map
+        # Or there is a tile at the given position
+        y < 0 || @tiles[x / TRUE_WIDTH][y / TRUE_HEIGHT]
+    end
 end

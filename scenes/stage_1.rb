@@ -16,10 +16,12 @@ class Stage1 < Gosu::Window
         # Title for the window
         self.caption = "Gosu Game"
 
-        # Load assets
+        # Load background image
         @background = Gosu::Image.new("../media/background.png", tileable: true)
-        @player = Player.new(100, 50)
+        # Load map
         @map = Map.new("../media/stage_1.txt")
+        # Load player
+        @player = Player.new(@map, 100, 50)
     end
 
     def update

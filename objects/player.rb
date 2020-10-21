@@ -6,8 +6,10 @@ class Player
     DRAW_Z = 5
     SPEED = 5
 
-    def initialize(x, y)
+    def initialize(map, x, y)
         @x, @y = x, y
+        @map = map
+
         @dir = :left
         # Velocity gets adjusted when jumping and falling
         @verticalVelocity = 0
@@ -29,7 +31,7 @@ class Player
         end
         
         # No idea what factor does but it makes the image not jump around
-        @curImage.draw(@x + offsetX, @y, DRAW_Z, factor, 1.0)
+        @curImage.draw(@x + offsetX, @y - HEIGHT - 1, DRAW_Z, factor, 1.0)
     end
 
     def update()
@@ -44,14 +46,15 @@ class Player
         moveX -= SPEED if Gosu.button_down? Gosu::KB_LEFT
         moveX += SPEED if Gosu.button_down? Gosu::KB_RIGHT
         
-        # Change direction based on movement
+        # Change direction based on movement and move player speed amount of times
         if moveX > 0
             @dir = :right
+            moveX.times { if movementAllowed?(@x + 1, @y) then @x += 1 end }
         elsif moveX < 0
             @dir = :left
+            # Convert movement to positive number
+            (-moveX).times { if movementAllowed?(@x - 1, @y) then @x -= 1 end }
         end
-
-        @x += moveX
 
         controlAnimation(moveX)
     end
@@ -85,7 +88,20 @@ class Player
         # By adding 1 each frame, player falls down
         @verticalVelocity += 1
         # Vertical movement
-        @y += @verticalVelocity
+        if @verticalVelocity > 0
+            @verticalVelocity.times { if movementAllowed?(@x, @y + 1) then @y += 1 else @verticalVelocity = 0 end }
+        end
+        if @verticalVelocity < 0
+            # Convert velocity to positive number
+            (-@verticalVelocity).times { if movementAllowed?(@x, @y - 1) then @y -= 1 else @verticalVelocity = 0 end }
+        end
+    end
+
+    # Checks if player is allowed to move to given position
+    def movementAllowed?(x, y)
+        # Check at the bottom of the player and top of the player
+        not @map.solidTileAt?(x, y) and
+        not @map.solidTileAt?(x, y - (HEIGHT - 5))
     end
 
     # These will only be called once
