@@ -3,6 +3,7 @@
 require "gosu"
 
 require_relative "../objects/player"
+require_relative "../objects/map"
 
 class Stage1 < Gosu::Window
     # Size of the window
@@ -17,7 +18,8 @@ class Stage1 < Gosu::Window
 
         # Load assets
         @background = Gosu::Image.new("../media/background.png", tileable: true)
-        @player = Player.new(50, 50)
+        @player = Player.new(100, 50)
+        @map = Map.new("../media/stage_1.txt")
     end
 
     def update
@@ -27,6 +29,9 @@ class Stage1 < Gosu::Window
     def draw
         # Draw background starting from corner
         @background.draw 0, 0, 0
+
+        # Draw map
+        @map.draw
 
         # Draw player in it's position
         @player.draw
