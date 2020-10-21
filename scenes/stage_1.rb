@@ -17,7 +17,7 @@ class Stage1 < Gosu::Window
 
         # Load assets
         @background = Gosu::Image.new("../media/background.png", tileable: true)
-        @player = Player.new(0, 0)
+        @player = Player.new(50, 50)
     end
 
     def update
@@ -30,6 +30,19 @@ class Stage1 < Gosu::Window
 
         # Draw player in it's position
         @player.draw
+    end
+
+    # These will only be called once
+    def button_down(id)
+        @player.buttonDown(id)
+        
+        case id
+        when Gosu::KB_ESCAPE
+            # Close the game
+            close
+        else
+            super
+        end
     end
 end
 

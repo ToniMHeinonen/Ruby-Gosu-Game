@@ -34,6 +34,7 @@ class Player
 
     def update()
         movePlayer()
+        controlYMovement()
     end
 
     # Move the player
@@ -62,6 +63,36 @@ class Player
         else
             # Loop between 2 moving animations
             @curImage = (Gosu.milliseconds / 175 % 2 == 0) ? @walk1 : @walk2
+        end
+
+        # Control jumping and falling animations
+        if (@verticalVelocity < 0)
+            # If player is moving up, change to jumping animation
+            @curImage = @jump
+        elsif (@verticalVelocity > 0)
+            # Else if player is moving down, change to standing animation
+            @curImage = @standing
+        end
+    end
+
+    # Controls jumping
+    def jump
+        @verticalVelocity = -20
+    end
+
+    def controlYMovement
+        # Acceleration/gravity
+        # By adding 1 each frame, player falls down
+        @verticalVelocity += 1
+        # Vertical movement
+        @y += @verticalVelocity
+    end
+
+    # These will only be called once
+    def buttonDown(id)
+        case id
+        when Gosu::KB_UP
+            jump()
         end
     end
 end
