@@ -29,6 +29,7 @@ class Stage1 < Gosu::Window
 
     def update
         @player.update
+        @map.update
         # Make camera follow player horizontally
         @cameraX = [[@player.x - WIDTH / 2, 0].max, @map.width * Tiles::TILE_SIZE - WIDTH].min
     end

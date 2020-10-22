@@ -1,7 +1,9 @@
 # All different kinds of tiles
+require_relative "enemy"
 module Tiles
     TILE_SIZE = 50
-    
+    TILE_CENTER = TILE_SIZE / 2
+
     Grass = 0
     Earth = 1
 end
@@ -26,6 +28,9 @@ class Map
         # Width is the lenght of first row
         @width = lines[0].size
 
+        # Initialize enemies
+        @enemies = []
+
         # Create an array of tiles
         @tiles = Array.new(@width) do |x|
             Array.new(@height) do |y|
@@ -34,12 +39,21 @@ class Map
                     Tiles::Grass
                 when '#'
                     Tiles::Earth
+                when 'E'
+                    # Spawn the enemy at the middle
+                    @enemies.push(Enemy.new(self, x * Tiles::TILE_SIZE + Tiles::TILE_CENTER , y * Tiles::TILE_SIZE + Tiles::TILE_CENTER))
+                    nil
                 else
                     # Add null value so it does not draw anything on there
                     nil
                 end
             end
         end
+    end
+
+    def update
+        # Update all enemies
+        @enemies.each { |e| e.update }
     end
   
     def draw
@@ -55,6 +69,9 @@ class Map
                 end
             end
         end
+
+        # Draws all enemies
+        @enemies.each { |e| e.draw }
     end
 
     # Checks if there is a solid tile at the position

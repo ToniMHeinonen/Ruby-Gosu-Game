@@ -1,8 +1,8 @@
-class Player
+class Enemy
     attr_reader :x, :y
 
     WIDTH = 42
-    HEIGHT = 50
+    HEIGHT = 31
     DRAW_Z = 5
     SPEED = 5
 
@@ -13,8 +13,8 @@ class Player
         @dir = :left
         # Velocity gets adjusted when jumping and falling
         @verticalVelocity = 0
-        # Load all animations to player character
-        @standing, @walk1, @walk2, @jump = *Gosu::Image.load_tiles("../media/player_char.png", WIDTH, HEIGHT)
+        # Load all animations to character
+        @standing, @walk1, @walk2, @jump = *Gosu::Image.load_tiles("../media/enemy_char.png", WIDTH, HEIGHT)
         # Image to draw
         @curImage = @standing    
     end
@@ -35,23 +35,22 @@ class Player
     end
 
     def update()
-        movePlayer()
+        move()
         controlYMovement()
     end
 
-    # Move the player
-    def movePlayer
-        moveX = 0
-        # Gosu.button_down? needs to be called every frame for movement
-        moveX -= SPEED if Gosu.button_down? Gosu::KB_LEFT
-        moveX += SPEED if Gosu.button_down? Gosu::KB_RIGHT
+    def move
+        #moveX = @dir == :left ? SPEED : -SPEED
+        if @dir == :left
+            moveX = -SPEED
+        else
+            moveX = SPEED
+        end
         
         # Change direction based on movement and move player speed amount of times
         if moveX > 0
-            @dir = :right
             moveX.times { if movementAllowed?(@x + 1, @y) then @x += 1 end }
         elsif moveX < 0
-            @dir = :left
             # Convert movement to positive number
             (-moveX).times { if movementAllowed?(@x - 1, @y) then @x -= 1 end }
         end
@@ -102,24 +101,30 @@ class Player
         offset = 5 # Allow the player to go little bit inside tile
         xWidthFromCenter = WIDTH / 2 - offset
 
+        # If tile at left, turn right
+        if @map.solidTileAt?(x - xWidthFromCenter, y - (HEIGHT / 2))    # Center-left
+            @dir = :right
+            return false
+        end
+        
+        # If tile at right, turn left
+        if @map.solidTileAt?(x + xWidthFromCenter, y - (HEIGHT / 2))    # Center-right
+            @dir = :left
+            return false
+        end
+
+        
+        offset = 5 # Allow the player to go little bit inside tile
+        xWidthFromCenter = WIDTH / 2 - offset
+
         # Check all the corners of player
         not @map.solidTileAt?(x - xWidthFromCenter, y) and  # Bottom-left
         not @map.solidTileAt?(x + xWidthFromCenter, y) and  # Bottom-right
         not @map.solidTileAt?(x - xWidthFromCenter, y - (HEIGHT - offset)) and  # Top-left
         not @map.solidTileAt?(x + xWidthFromCenter, y - (HEIGHT - offset)) and  # Top-right
         # Check top, bottom, left and right center
-        not @map.solidTileAt?(x - xWidthFromCenter, y - (HEIGHT / 2)) and   # Center-left
         not @map.solidTileAt?(x + xWidthFromCenter, y - (HEIGHT / 2)) and   # Center-right
         not @map.solidTileAt?(x - xWidthFromCenter, y) and                  # Center-bottom
         not @map.solidTileAt?(x + xWidthFromCenter, y - (HEIGHT - offset))  # Center-top
-        
-    end
-
-    # These will only be called once
-    def buttonDown(id)
-        case id
-        when Gosu::KB_UP
-            jump()
-        end
     end
 end
