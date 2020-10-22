@@ -101,7 +101,10 @@ class Player
     def movementAllowed?(x, y)
         # Check at the bottom of the player and top of the player
         not @map.solidTileAt?(x, y) and
-        not @map.solidTileAt?(x, y - (HEIGHT - 5))
+        not @map.solidTileAt?(x, y - (HEIGHT - 5)) and
+        # Check at the left of the player and right of the player
+        not @map.solidTileAt?(x - (WIDTH / 2 - 5), y) and
+        not @map.solidTileAt?(x + (WIDTH / 2 - 5), y)
     end
 
     # These will only be called once
