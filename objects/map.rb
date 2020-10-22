@@ -1,5 +1,7 @@
 # All different kinds of tiles
 module Tiles
+    TILE_SIZE = 50
+    
     Grass = 0
     Earth = 1
 end
@@ -11,9 +13,6 @@ class Map
     # Size of tiles in file
     TILE_WIDTH = 60
     TILE_HEIGHT = 60
-    # Size of tiles to make them overlap
-    TRUE_WIDTH = 50
-    TRUE_HEIGHT = 50
     
     DRAW_Z = 10
   
@@ -52,7 +51,7 @@ class Map
                 tile = @tiles[x][y]
                 if tile
                     # Draw the tile with an offset (tile images have some overlap)
-                    @tileset[tile].draw(x * TRUE_WIDTH - offset, y * TRUE_HEIGHT - offset, DRAW_Z)
+                    @tileset[tile].draw(x * Tiles::TILE_SIZE - offset, y * Tiles::TILE_SIZE - offset, DRAW_Z)
                 end
             end
         end
@@ -62,6 +61,6 @@ class Map
     def solidTileAt?(x, y)
         # If pixel is at the bottom of the map
         # Or there is a tile at the given position
-        y < 0 || @tiles[x / TRUE_WIDTH][y / TRUE_HEIGHT]
+        y < 0 || @tiles[x / Tiles::TILE_SIZE][y / Tiles::TILE_SIZE]
     end
 end

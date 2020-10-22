@@ -99,12 +99,14 @@ class Player
 
     # Checks if player is allowed to move to given position
     def movementAllowed?(x, y)
+        offset = 5 # Allow the player to go little bit inside tile
+        
         # Check at the bottom of the player and top of the player
         not @map.solidTileAt?(x, y) and
-        not @map.solidTileAt?(x, y - (HEIGHT - 5)) and
+        not @map.solidTileAt?(x, y - (HEIGHT - offset)) and
         # Check at the left of the player and right of the player
-        not @map.solidTileAt?(x - (WIDTH / 2 - 5), y) and
-        not @map.solidTileAt?(x + (WIDTH / 2 - 5), y)
+        not @map.solidTileAt?(x - (WIDTH / 2 - offset), y) and
+        not @map.solidTileAt?(x + (WIDTH / 2 - offset), y)
     end
 
     # These will only be called once

@@ -22,21 +22,28 @@ class Stage1 < Gosu::Window
         @map = Map.new("../media/stage_1.txt")
         # Load player
         @player = Player.new(@map, 100, 50)
+        # Setup camera
+        @cameraX = 0
+        @cameraY = @map.height * Tiles::TILE_SIZE - HEIGHT
     end
 
     def update
         @player.update
+        # Make camera follow player horizontally
+        @cameraX = [[@player.x - WIDTH / 2, 0].max, @map.width * Tiles::TILE_SIZE - WIDTH].min
     end
 
     def draw
         # Draw background starting from corner
         @background.draw 0, 0, 0
 
-        # Draw map
-        @map.draw
-
-        # Draw player in it's position
-        @player.draw
+        # Draw map and player relative to camera position
+        Gosu.translate(-@cameraX, -@cameraY) do
+            # Draw map
+            @map.draw
+            # Draw player in it's position
+            @player.draw
+        end
     end
 
     # These will only be called once
