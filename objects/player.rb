@@ -6,6 +6,7 @@ class Player < Character
     HEIGHT = 50
     DRAW_Z = 5
     SPEED = 5
+    JUMP_HEIGHT = 20
 
     def initialize(map, x, y)
         # Load all animations to player character
@@ -32,7 +33,14 @@ class Player < Character
 
     # Controls jumping
     def jump
-        @verticalVelocity = -20
+        @collision.refresh(self, @x, @y + 1)
+        
+        # If one pixel below character is solid, jumping is allowed
+        if @map.solidTileAt?(collision.center_bottom[0], collision.center_bottom[1]) or 
+            @map.solidTileAt?(collision.bottom_left[0], collision.bottom_left[1]) or
+            @map.solidTileAt?(collision.bottom_right[0], collision.bottom_right[1])
+            @verticalVelocity = -JUMP_HEIGHT
+        end
     end
 
     # These will only be called once

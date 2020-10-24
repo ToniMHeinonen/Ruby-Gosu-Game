@@ -1,9 +1,12 @@
+require_relative "../tools/collision"
+
 class Character
-    attr_reader :x, :y
+    attr_reader :x, :y, :width, :height, :collision
 
     def initialize(width, height, drawZ, map, x, y)
         @x, @y = x, y
         @map = map
+        @collision = Collision.new
 
         @width = width
         @height = height
@@ -86,24 +89,18 @@ class Character
 
     # Checks if character is allowed to move to given position
     def movementAllowed?(x, y)
-        offset, xWidthFromCenter = getOffsetValues()
+        # If character has not tried to move, skip code
+        if x == @x and y == @y
+            return
+        end
+        
+        @collision.refresh(self, x, y)
 
-        # Check all the corners of character
-        not @map.solidTileAt?(x - xWidthFromCenter, y) and  # Bottom-left
-        not @map.solidTileAt?(x + xWidthFromCenter, y) and  # Bottom-right
-        not @map.solidTileAt?(x - xWidthFromCenter, y - (@height - offset)) and  # Top-left
-        not @map.solidTileAt?(x + xWidthFromCenter, y - (@height - offset)) and  # Top-right
-        # Check top, bottom, left and right center of character
-        not @map.solidTileAt?(x - xWidthFromCenter, y - (@height / 2)) and   # Center-left
-        not @map.solidTileAt?(x + xWidthFromCenter, y - (@height / 2)) and   # Center-right
-        not @map.solidTileAt?(x - xWidthFromCenter, y) and                  # Center-bottom
-        not @map.solidTileAt?(x + xWidthFromCenter, y - (@height - offset))  # Center-top
+        @collision.collisions.each do |col|
+            if @map.solidTileAt?(col[0], col[1])
+                return false
+            end
+        end
     end
 
-    def getOffsetValues
-        offset = 5 # Allow the character to go little bit inside tile
-        xWidthFromCenter = @width / 2 - offset
-
-        return offset, xWidthFromCenter
-    end
 end

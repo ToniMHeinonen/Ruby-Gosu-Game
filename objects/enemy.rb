@@ -1,4 +1,5 @@
 require_relative "character"
+require_relative "../tools/collision"
 
 class Enemy < Character
 
@@ -24,16 +25,16 @@ class Enemy < Character
 
     # Checks if enemy is allowed to move to given position
     def movementAllowed?(x, y)
-        offset, xWidthFromCenter = getOffsetValues()
+        @collision.refresh(self, x, y)
 
         # If tile at left, turn right
-        if @map.solidTileAt?(x - xWidthFromCenter, y - (HEIGHT / 2))    # Center-left
+        if @map.solidTileAt?(@collision.center_left[0], @collision.center_left[1])
             @dir = :right
             return false
         end
         
         # If tile at right, turn left
-        if @map.solidTileAt?(x + xWidthFromCenter, y - (HEIGHT / 2))    # Center-right
+        if @map.solidTileAt?(@collision.center_right[0], @collision.center_right[1])    # Center-right
             @dir = :left
             return false
         end
