@@ -10,7 +10,7 @@ end
 
 # Map class holds and draws tiles and gems.
 class Map
-    attr_reader :width, :height
+    attr_reader :width, :height, :diamonds
 
     # Size of tiles in file
     TILE_WIDTH = 60
@@ -31,6 +31,10 @@ class Map
         # Initialize enemies
         @enemies = []
 
+        # Initialize collectible image here so it only happens once
+        diamond_img = Gosu::Image.new("../media/diamond.png")
+        @diamonds = []
+
         # Create an array of tiles
         @tiles = Array.new(@width) do |x|
             Array.new(@height) do |y|
@@ -42,6 +46,9 @@ class Map
                 when 'E'
                     # Spawn the enemy at the middle
                     @enemies.push(Enemy.new(self, x * Tiles::TILE_SIZE + Tiles::TILE_CENTER , y * Tiles::TILE_SIZE + Tiles::TILE_CENTER))
+                    nil
+                when 'C'
+                    @diamonds.push(Collectible.new(diamond_img, x * Tiles::TILE_SIZE + Tiles::TILE_CENTER, y * Tiles::TILE_SIZE + Tiles::TILE_CENTER))
                     nil
                 else
                     # Add null value so it does not draw anything on there
@@ -72,6 +79,9 @@ class Map
 
         # Draws all enemies
         @enemies.each { |e| e.draw }
+
+        # Draws all diamonds
+        @diamonds.each { |c| c.draw }
     end
 
     # Checks if there is a solid tile at the position

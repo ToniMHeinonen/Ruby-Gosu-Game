@@ -10,6 +10,8 @@ class Collision
     attr_reader :center_left
 
     OFFSET = 5 # Allow the character to go little bit inside tile
+    X = 0
+    Y = 1
 
     def refresh(object, x, y)
         width = object.width
@@ -31,6 +33,13 @@ class Collision
                         @center_top, @center_right, @center_bottom, @center_left]
     end
 
+    def checkCollision(other)
+        xMin = @center_left[X]
+        xMax = @center_right[X]
+        yMin = @center_bottom[Y]
+        yMax = @center_top[Y]
 
-
+        xMax > other.center_left[X] && xMin < other.center_right[X] && 
+        yMin > other.center_top[Y] && yMax < other.center_bottom[Y]
+    end
 end

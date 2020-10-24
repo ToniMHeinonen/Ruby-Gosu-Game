@@ -1,4 +1,5 @@
 require_relative "character"
+require_relative "collectible"
 
 class Player < Character
 
@@ -17,7 +18,7 @@ class Player < Character
 
     def update
         checkMovement()
-
+        collisionCheck(@map.diamonds)
         super
     end
 
@@ -48,6 +49,18 @@ class Player < Character
         case id
         when Gosu::KB_UP
             jump()
+        end
+    end
+
+    def collisionCheck(objects)
+        @collision.refresh(self, @x, @y)
+        
+        if objects[0].is_a?(Collectible)
+            # Remove object if collectible
+            objects.reject! do |c|
+                c.collision.refresh(c, c.x, c.y)
+                @collision.checkCollision(c.collision)
+            end
         end
     end
 end
