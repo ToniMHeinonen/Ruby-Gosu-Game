@@ -34,8 +34,8 @@ class Player < Character
 
     # Controls jumping
     def jump
-        @collision.refresh(self, @x, @y + 1)
-        
+        @collision.checkPosition(@x, @y + 1)
+
         # If one pixel below character is solid, jumping is allowed
         if @map.solidTileAt?(collision.center_bottom[0], collision.center_bottom[1]) or 
             @map.solidTileAt?(collision.bottom_left[0], collision.bottom_left[1]) or
@@ -53,12 +53,9 @@ class Player < Character
     end
 
     def collisionCheck(objects)
-        @collision.refresh(self, @x, @y)
-        
         if objects[0].is_a?(Collectible)
             # Remove object if collectible
             objects.reject! do |c|
-                c.collision.refresh(c, c.x, c.y)
                 @collision.checkCollision(c.collision)
             end
         end

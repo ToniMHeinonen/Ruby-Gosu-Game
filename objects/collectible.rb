@@ -10,7 +10,7 @@ class Collectible
         @x, @y = x, y
         @width = image.width - OFFSET
         @height = image.height - OFFSET
-        @collision = Collision.new
+        @collision = Collision.new(self)
     end
 
     def draw

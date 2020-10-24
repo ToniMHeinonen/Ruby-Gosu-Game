@@ -6,7 +6,7 @@ class Character
     def initialize(width, height, drawZ, map, x, y)
         @x, @y = x, y
         @map = map
-        @collision = Collision.new
+        @collision = Collision.new(self)
 
         @width = width
         @height = height
@@ -93,8 +93,8 @@ class Character
         if x == @x and y == @y
             return
         end
-        
-        @collision.refresh(self, x, y)
+
+        @collision.checkPosition(x, y)
 
         @collision.collisions.each do |col|
             if @map.solidTileAt?(col[0], col[1])

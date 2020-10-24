@@ -25,7 +25,7 @@ class Enemy < Character
 
     # Checks if enemy is allowed to move to given position
     def movementAllowed?(x, y)
-        @collision.refresh(self, x, y)
+        @collision.checkPosition(x, y)
 
         # If tile at left, turn right
         if @map.solidTileAt?(@collision.center_left[0], @collision.center_left[1])
