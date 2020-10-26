@@ -15,7 +15,6 @@ module DRAW_ORDER
 end
 
 class Game < Gosu::Window
-    attr_reader :cameraX
 
     # Size of the window
     WIDTH = 1024
@@ -62,7 +61,7 @@ class Game < Gosu::Window
         end
 
         # Draw score
-        @font.draw_text("Score: #{@player.score}", 60, 10, DRAW_ORDER::UI, 1.0, 1.0, Gosu::Color::BLACK)
+        @font.draw_text("Score: #{@player.score}", 60, 10, DRAW_ORDER::UI, 1.0, 1.0, Gosu::Color::WHITE)
     end
 
     # These will only be called once

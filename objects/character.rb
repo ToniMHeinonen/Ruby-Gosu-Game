@@ -34,7 +34,7 @@ class Character
         @curImage.draw( @x + offsetX,
                         @y - @height - 1 * Math.sin(Gosu.milliseconds / 250.0), # Make slight floating animation up and down
                         @drawZ, 
-                        factor, # No idea what factor does but it makes the image not jump around
+                        factor, # factor flips the image horizontally
                         1.0)
     end
 
@@ -84,8 +84,7 @@ class Character
         # Vertical movement
         if @verticalVelocity > 0
             @verticalVelocity.times { if movementAllowed?(@x, @y + 1) then @y += 1 else @verticalVelocity = 0 end }
-        end
-        if @verticalVelocity < 0
+        elsif @verticalVelocity < 0
             # Convert velocity to positive number
             (-@verticalVelocity).times { if movementAllowed?(@x, @y - 1) then @y -= 1 else @verticalVelocity = 0 end }
         end

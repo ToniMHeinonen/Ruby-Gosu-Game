@@ -13,7 +13,7 @@ end
 
 # Map class holds and draws tiles and gems.
 class Map
-    attr_reader :width, :height, :diamonds, :portal
+    attr_reader :width, :height, :diamonds, :enemies, :portal
 
     # Size of tiles in file
     TILE_WIDTH = 60
