@@ -14,7 +14,9 @@ module DRAW_ORDER
     UI = 100
 end
 
-class Stage1 < Gosu::Window
+class Game < Gosu::Window
+    attr_reader :cameraX
+
     # Size of the window
     WIDTH = 1024
     HEIGHT = 576
@@ -29,8 +31,8 @@ class Stage1 < Gosu::Window
 
         # Load background image
         @background = Gosu::Image.new("../media/background.png", tileable: true)
-        # Load map
-        @map = Map.new("../media/stage_1.txt")
+        # Initialize map
+        @map = Map.new()
         # Load player
         @player = Player.new(@map, 100, 50)
         # Setup camera
@@ -78,4 +80,4 @@ class Stage1 < Gosu::Window
 end
 
 # Show the game window
-Stage1.new.show
+Game.new.show

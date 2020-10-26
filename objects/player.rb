@@ -65,5 +65,8 @@ class Player < Character
                 false
             end
         end
+
+        # Change stage on portal collision
+        @map.nextStage if @collision.checkCollision?(@map.portal.collision)
     end
 end

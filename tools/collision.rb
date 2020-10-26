@@ -17,10 +17,12 @@ class Collision
         @object = object
     end
 
+    # Refreshes the collision point with the object's current position
     def refresh()
         checkPosition(@object.x, @object.y)
     end
 
+    # Moves the collision point to the provided x and y position
     def checkPosition(x, y)
         width = @object.width
         height = @object.height
@@ -41,6 +43,7 @@ class Collision
                         @center_top, @center_right, @center_bottom, @center_left]
     end
 
+    # Checks if collision happens with the given collision area
     def checkCollision?(other)
         refresh()
         other.refresh()

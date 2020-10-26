@@ -19,9 +19,25 @@ class Map
     TILE_WIDTH = 60
     TILE_HEIGHT = 60
   
-    def initialize(filename)
+    def initialize()
         @tileset = Gosu::Image.load_tiles("../media/tileset.png", TILE_WIDTH, TILE_HEIGHT, tileable: true)
 
+        @enemyAnimation = *Gosu::Image.load_tiles("../media/enemy_char.png", Enemy::WIDTH, Enemy::HEIGHT)
+        @diamondImg = Gosu::Image.new("../media/diamond.png")
+
+        @stages = []
+        2.times { |i| @stages.push("../media/stage_#{(i + 1).to_s}.txt") }
+        @currentStageIndex = -1
+
+        nextStage()
+    end
+
+    def nextStage
+        @currentStageIndex += 1
+        createMap(@stages[@currentStageIndex]) if @stages.length > @currentStageIndex
+    end
+
+    def createMap(filename)
         # Load all lines from the given file
         lines = File.readlines(filename).map { |line| line.chomp }
         # Height is the size of rows
@@ -31,10 +47,8 @@ class Map
 
         # Initialize enemies
         @enemies = []
-        enemyAnimation = *Gosu::Image.load_tiles("../media/enemy_char.png", Enemy::WIDTH, Enemy::HEIGHT)
 
-        # Initialize collectible image here so it only happens once
-        diamondImg = Gosu::Image.new("../media/diamond.png")
+        # Initialize diamonds
         @diamonds = []
 
         # Initialize portal
@@ -50,10 +64,10 @@ class Map
                     Tiles::Earth
                 when 'E'
                     # Spawn the enemy at the middle
-                    @enemies.push(Enemy.new(enemyAnimation, self, x * Tiles::TILE_SIZE + Tiles::TILE_CENTER , y * Tiles::TILE_SIZE + Tiles::TILE_CENTER))
+                    @enemies.push(Enemy.new(@enemyAnimation, self, x * Tiles::TILE_SIZE + Tiles::TILE_CENTER , y * Tiles::TILE_SIZE + Tiles::TILE_CENTER))
                     nil
                 when 'C'
-                    @diamonds.push(Collectible.new(diamondImg, x * Tiles::TILE_SIZE + Tiles::TILE_CENTER, y * Tiles::TILE_SIZE + Tiles::TILE_CENTER))
+                    @diamonds.push(Collectible.new(@diamondImg, x * Tiles::TILE_SIZE + Tiles::TILE_CENTER, y * Tiles::TILE_SIZE + Tiles::TILE_CENTER))
                     nil
                 when 'P'
                     @portal = Portal.new(x * Tiles::TILE_SIZE + Tiles::TILE_CENTER, y * Tiles::TILE_SIZE + Tiles::TILE_CENTER)
