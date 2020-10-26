@@ -30,8 +30,12 @@ class Character
             factor = -1.0
         end
         
-        # No idea what factor does but it makes the image not jump around
-        @curImage.draw(@x + offsetX, @y - @height - 1, @drawZ, factor, 1.0)
+        
+        @curImage.draw( @x + offsetX,
+                        @y - @height - 1 * Math.sin(Gosu.milliseconds / 250.0), # Make slight floating animation up and down
+                        @drawZ, 
+                        factor, # No idea what factor does but it makes the image not jump around
+                        1.0)
     end
 
     def update()
