@@ -5,7 +5,6 @@ class Player < Character
 
     WIDTH = 42
     HEIGHT = 50
-    DRAW_Z = 5
     SPEED = 5
     JUMP_HEIGHT = 20
 
@@ -13,7 +12,7 @@ class Player < Character
         # Load all animations to player character
         @standing, @walk1, @walk2, @jump = *Gosu::Image.load_tiles("../media/player_char.png", WIDTH, HEIGHT)
 
-        super(WIDTH, HEIGHT, DRAW_Z, map, x, y)  
+        super(WIDTH, HEIGHT, map, x, y)  
     end
 
     def update

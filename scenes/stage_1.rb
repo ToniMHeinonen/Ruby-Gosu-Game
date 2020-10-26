@@ -5,6 +5,14 @@ require "gosu"
 require_relative "../objects/player"
 require_relative "../objects/map"
 
+module DRAW_ORDER
+    BACKGROUND = 0
+    PORTAL = 1
+    CHARACTER = 5
+    COLLECTIBLE = 6
+    TILES = 10
+end
+
 class Stage1 < Gosu::Window
     # Size of the window
     WIDTH = 1024

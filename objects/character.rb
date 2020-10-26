@@ -3,14 +3,14 @@ require_relative "../tools/collision"
 class Character
     attr_reader :x, :y, :width, :height, :collision
 
-    def initialize(width, height, drawZ, map, x, y)
+    def initialize(width, height, map, x, y)
         @x, @y = x, y
         @map = map
         @collision = Collision.new(self)
 
         @width = width
         @height = height
-        @drawZ = drawZ
+        @drawZ = DRAW_ORDER::CHARACTER
 
         @dir = :left
         # Velocity gets adjusted when jumping and falling

@@ -5,14 +5,13 @@ class Enemy < Character
 
     WIDTH = 42
     HEIGHT = 31
-    DRAW_Z = 5
     SPEED = 5
 
-    def initialize(map, x, y)
+    def initialize(animation, map, x, y)
         # Load all animations to enemy
-        @standing, @walk1, @walk2, @jump = *Gosu::Image.load_tiles("../media/enemy_char.png", WIDTH, HEIGHT) 
+        @standing, @walk1, @walk2, @jump = animation 
 
-        super(WIDTH, HEIGHT, DRAW_Z, map, x, y)  
+        super(WIDTH, HEIGHT, map, x, y)  
     end
 
     def update()

@@ -15,6 +15,6 @@ class Collectible
 
     def draw
         # Draw, slowly rotating
-        @image.draw_rot(@x, @y, 0, 10 * Math.sin(Gosu.milliseconds / 250.0))
+        @image.draw_rot(@x, @y, DRAW_ORDER::COLLECTIBLE, 10 * Math.sin(Gosu.milliseconds / 250.0))
     end
 end
