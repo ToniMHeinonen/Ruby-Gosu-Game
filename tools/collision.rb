@@ -41,7 +41,7 @@ class Collision
                         @center_top, @center_right, @center_bottom, @center_left]
     end
 
-    def checkCollision(other)
+    def checkCollision?(other)
         refresh()
         other.refresh()
         

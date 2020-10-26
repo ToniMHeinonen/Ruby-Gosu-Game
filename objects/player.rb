@@ -1,7 +1,9 @@
 require_relative "character"
 require_relative "collectible"
+require_relative "portal"
 
 class Player < Character
+    attr_reader :score
 
     WIDTH = 42
     HEIGHT = 50
@@ -11,13 +13,14 @@ class Player < Character
     def initialize(map, x, y)
         # Load all animations to player character
         @standing, @walk1, @walk2, @jump = *Gosu::Image.load_tiles("../media/player_char.png", WIDTH, HEIGHT)
+        @score = 0
 
         super(WIDTH, HEIGHT, map, x, y)  
     end
 
     def update
         checkMovement()
-        collisionCheck(@map.diamonds)
+        checkCollisions()
         super
     end
 
@@ -51,11 +54,15 @@ class Player < Character
         end
     end
 
-    def collisionCheck(objects)
-        if objects[0].is_a?(Collectible)
-            # Remove object if collectible
-            objects.reject! do |c|
-                @collision.checkCollision(c.collision)
+    def checkCollisions
+        # Remove diamonds on collision
+        before = @map.diamonds.length
+        @map.diamonds.reject! do |c|
+            if @collision.checkCollision?(c.collision)
+                @score += 1
+                true
+            else
+                false
             end
         end
     end

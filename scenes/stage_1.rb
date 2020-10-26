@@ -11,6 +11,7 @@ module DRAW_ORDER
     CHARACTER = 5
     COLLECTIBLE = 6
     TILES = 10
+    UI = 100
 end
 
 class Stage1 < Gosu::Window
@@ -23,6 +24,8 @@ class Stage1 < Gosu::Window
 
         # Title for the window
         self.caption = "Gosu Game"
+        # Load text font
+        @font = Gosu::Font.new(25)
 
         # Load background image
         @background = Gosu::Image.new("../media/background.png", tileable: true)
@@ -52,7 +55,12 @@ class Stage1 < Gosu::Window
             @map.draw
             # Draw player in it's position
             @player.draw
+
+            
         end
+
+        # Draw score
+        @font.draw_text("Score: #{@player.score}", 60, 10, DRAW_ORDER::UI, 1.0, 1.0, Gosu::Color::BLACK)
     end
 
     # These will only be called once
