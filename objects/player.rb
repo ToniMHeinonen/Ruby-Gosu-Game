@@ -11,14 +11,21 @@ class Player < Character
     SPEED = 5
     JUMP_HEIGHT = 20
 
-    def initialize(map, x, y)
+    def initialize(map)
         # Load all animations to player character
         @standing, @walk1, @walk2, @jump = *Gosu::Image.load_tiles("../media/player_char.png", WIDTH, HEIGHT)
         @score = 0
         @isAlive = true
         @deathUp = nil
 
-        super(WIDTH, HEIGHT, map, x, y)  
+        super(WIDTH, HEIGHT, map, 0, 0)
+        # Start player at facing right
+        @dir = :right
+    end
+
+    def reposition(x, y)
+        @x = x
+        @y = y
     end
 
     def update

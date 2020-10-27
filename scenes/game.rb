@@ -26,7 +26,7 @@ class Game < Gosu::Window
         # Title for the window
         self.caption = "Gosu Game"
         # Load text fonts
-        @fontSmall = Gosu::Font.new(25)
+        @font = Gosu::Font.new(30)
 
         # Init texts
         @gameOver = Gosu::Image.from_text("GAME OVER", 100, {:align => :center})
@@ -35,12 +35,16 @@ class Game < Gosu::Window
         # Load background image
         @background = Gosu::Image.new("../media/background.png", tileable: true)
         # Initialize map
-        @map = Map.new()
-        # Load player
-        @player = Player.new(@map, 100, 50)
+        @map = Map.new
+        startGame()
         # Setup camera
         @cameraX = 0
         @cameraY = @map.height * Tiles::TILE_SIZE - HEIGHT
+    end
+
+    def startGame
+        @player = Player.new(@map)
+        @map.startGame(@player)
     end
 
     def update
@@ -62,10 +66,10 @@ class Game < Gosu::Window
             @player.draw
         end
 
-        if (@player.isAlive)
-            # Draw score
-            @fontSmall.draw_text("Score: #{@player.score}", 60, 10, DRAW_ORDER::UI, 1.0, 1.0, Gosu::Color::WHITE)
-        else
+        # Draw score
+        @font.draw_text("Score: #{@player.score}", 60, 10, DRAW_ORDER::UI, 1.0, 1.0, Gosu::Color::WHITE)
+
+        if (!@player.isAlive)
             # Draw game over
             @gameOver.draw_rot(WIDTH / 2, HEIGHT / 2 - 100, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5)
             @restartText.draw_rot(WIDTH / 2, HEIGHT / 2, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5)
@@ -82,6 +86,7 @@ class Game < Gosu::Window
             close
         when Gosu::KB_R
             # Restart the game
+            startGame() if !@player.isAlive
         else
             super
         end

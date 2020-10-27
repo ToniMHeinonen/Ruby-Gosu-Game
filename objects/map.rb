@@ -26,10 +26,14 @@ class Map
         @enemyAnimation = *Gosu::Image.load_tiles("../media/enemy_char.png", Enemy::WIDTH, Enemy::HEIGHT)
         @diamondImg = Gosu::Image.new("../media/diamond.png")
 
+        # Load all the stages in to an array
         @stages = []
-        STAGE_AMOUNT.times { |i| @stages.push("../media/stage_#{(i + 1).to_s}.txt") }
-        @currentStageIndex = -1
+        STAGE_AMOUNT.times { |i| @stages.push("../stages/stage_#{(i + 1).to_s}.txt") }
+    end
 
+    def startGame(player)
+        @player = player
+        @currentStageIndex = -1
         nextStage()
     end
 
@@ -72,6 +76,9 @@ class Map
                     nil
                 when 'P'
                     @portal = Portal.new(x * Tiles::TILE_SIZE + Tiles::TILE_CENTER, y * Tiles::TILE_SIZE + Tiles::TILE_CENTER)
+                    nil
+                when 'U'
+                    @player.reposition(x * Tiles::TILE_SIZE + Tiles::TILE_CENTER, y * Tiles::TILE_SIZE + Tiles::TILE_CENTER)
                     nil
                 else
                     # Add null value so it does not draw anything on there
