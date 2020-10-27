@@ -18,6 +18,7 @@ class Map
     # Size of tiles in file
     TILE_WIDTH = 60
     TILE_HEIGHT = 60
+    STAGE_AMOUNT = 2
   
     def initialize()
         @tileset = Gosu::Image.load_tiles("../media/tileset.png", TILE_WIDTH, TILE_HEIGHT, tileable: true)
@@ -26,7 +27,7 @@ class Map
         @diamondImg = Gosu::Image.new("../media/diamond.png")
 
         @stages = []
-        2.times { |i| @stages.push("../media/stage_#{(i + 1).to_s}.txt") }
+        STAGE_AMOUNT.times { |i| @stages.push("../media/stage_#{(i + 1).to_s}.txt") }
         @currentStageIndex = -1
 
         nextStage()
@@ -81,6 +82,10 @@ class Map
     end
 
     def update
+        # Remove enemies which fall of the stage
+        @enemies.reject! do |e|
+            e.y > Game::HEIGHT + 100
+        end
         # Update all enemies
         @enemies.each { |e| e.update }
     end

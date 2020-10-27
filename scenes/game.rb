@@ -25,8 +25,12 @@ class Game < Gosu::Window
 
         # Title for the window
         self.caption = "Gosu Game"
-        # Load text font
-        @font = Gosu::Font.new(25)
+        # Load text fonts
+        @fontSmall = Gosu::Font.new(25)
+
+        # Init texts
+        @gameOver = Gosu::Image.from_text("GAME OVER", 100, {:align => :center})
+        @restartText = Gosu::Image.from_text("Press R to restart", 70, {:align => :center})
 
         # Load background image
         @background = Gosu::Image.new("../media/background.png", tileable: true)
@@ -56,12 +60,16 @@ class Game < Gosu::Window
             @map.draw
             # Draw player in it's position
             @player.draw
-
-            
         end
 
-        # Draw score
-        @font.draw_text("Score: #{@player.score}", 60, 10, DRAW_ORDER::UI, 1.0, 1.0, Gosu::Color::WHITE)
+        if (@player.isAlive)
+            # Draw score
+            @fontSmall.draw_text("Score: #{@player.score}", 60, 10, DRAW_ORDER::UI, 1.0, 1.0, Gosu::Color::WHITE)
+        else
+            # Draw game over
+            @gameOver.draw_rot(WIDTH / 2, HEIGHT / 2 - 100, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5)
+            @restartText.draw_rot(WIDTH / 2, HEIGHT / 2, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5)
+        end
     end
 
     # These will only be called once
@@ -72,6 +80,8 @@ class Game < Gosu::Window
         when Gosu::KB_ESCAPE
             # Close the game
             close
+        when Gosu::KB_R
+            # Restart the game
         else
             super
         end

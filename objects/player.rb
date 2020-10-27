@@ -4,7 +4,7 @@ require_relative "portal"
 require_relative "enemy"
 
 class Player < Character
-    attr_reader :score
+    attr_reader :score, :isAlive
 
     WIDTH = 42
     HEIGHT = 50
@@ -58,7 +58,7 @@ class Player < Character
             @y += 3
             if @y > Game::HEIGHT + 100
                 # Game over when out of screen
-                puts "finish"
+                # Do nothing special at the moment
             end
         end
     end
