@@ -73,7 +73,7 @@ class Player < Character
     def drawDeathAnimation
         # Draw upside down when going down in death animation
         factor = @deathUp ? 1.0 : -1.0
-        offsetY = @deathUp ? 0 : @height / 2
+        offsetY = @deathUp ? -(@height / 2) : @height / 2
         
         @curImage.draw( @x - @width / 2, @y + offsetY, DRAW_ORDER::UI - 1, 1.0, factor, Gosu::Color::RED.dup)
     end

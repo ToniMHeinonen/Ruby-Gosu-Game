@@ -15,6 +15,16 @@ class Collision
 
     def initialize(object)
         @object = object
+
+        refreshCurrentValues()
+    end
+
+    # Sets current position and size values for the collision
+    def refreshCurrentValues()
+        @curX = @object.x
+        @curY = @object.y
+        @curWidth = @object.width
+        @curHeight = @object.height
     end
 
     # Refreshes the collision point with the object's current position
@@ -26,9 +36,22 @@ class Collision
     def checkPosition(x, y)
         width = @object.width
         height = @object.height
+
+        if @collisions != nil and # Position values has not been made yet
+            @curX == x and # Position and size has not changed
+            @curY == y and 
+            @curWidth == width and 
+            @curHeight == height
+            # Skip code to boost performance
+            return 
+        else
+            # Refresh current values from the object
+            refreshCurrentValues()
+        end
         
         xWidthFromCenter = width / 2 - OFFSET
 
+        # Set corners and middle points as their own values
         @top_left = [x - xWidthFromCenter, y - (height - OFFSET)]
         @top_right = [x + xWidthFromCenter, y - (height - OFFSET)]
         @bottom_left = [x - xWidthFromCenter, y]
