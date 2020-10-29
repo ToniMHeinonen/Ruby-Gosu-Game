@@ -18,7 +18,7 @@ class Map
     # Size of tiles in file
     TILE_WIDTH = 60
     TILE_HEIGHT = 60
-    STAGE_AMOUNT = 2
+    STAGE_AMOUNT = 3
   
     def initialize()
         @tileset = Gosu::Image.load_tiles("../media/tileset.png", TILE_WIDTH, TILE_HEIGHT, tileable: true)
