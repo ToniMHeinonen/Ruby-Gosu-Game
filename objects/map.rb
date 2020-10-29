@@ -18,7 +18,7 @@ class Map
     # Size of tiles in file
     TILE_WIDTH = 60
     TILE_HEIGHT = 60
-    STAGE_AMOUNT = 3
+    STARTING_STAGE = 1
   
     def initialize()
         @tileset = Gosu::Image.load_tiles("../media/tileset.png", TILE_WIDTH, TILE_HEIGHT, tileable: true)
@@ -27,13 +27,13 @@ class Map
         @diamondImg = Gosu::Image.new("../media/diamond.png")
 
         # Load all the stages in to an array
-        @stages = []
-        STAGE_AMOUNT.times { |i| @stages.push("../stages/stage_#{(i + 1).to_s}.txt") }
+        @stages = Dir.glob('../stages/*').select { |e| File.file? e }
     end
 
     def startGame(player)
         @player = player
-        @currentStageIndex = -1
+        # -2 since index starts at 0 and nextStage() adds +1 to the value
+        @currentStageIndex = STARTING_STAGE - 2
         nextStage()
     end
 
@@ -44,7 +44,7 @@ class Map
 
     def createMap(filename)
         # Load all lines from the given file
-        lines = File.readlines(filename).map { |line| line.chomp }
+        lines = File.readlines("../stages/#{filename}").map { |line| line.chomp }
         # Height is the size of rows
         @height = lines.size
         # Width is the lenght of first row
