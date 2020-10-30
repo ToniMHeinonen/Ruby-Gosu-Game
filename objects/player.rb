@@ -82,8 +82,8 @@ class Player < Character
     def checkMovement
         moveX = 0
         # Gosu.button_down? needs to be called every frame for movement
-        moveX -= SPEED if Gosu.button_down? Gosu::KB_LEFT
-        moveX += SPEED if Gosu.button_down? Gosu::KB_RIGHT
+        moveX -= SPEED if Gosu.button_down? Gosu::KB_LEFT or Gosu.button_down? Gosu::KB_A
+        moveX += SPEED if Gosu.button_down? Gosu::KB_RIGHT or Gosu.button_down? Gosu::KB_D
 
         moveCharacter(moveX) # Super
     end
@@ -103,7 +103,7 @@ class Player < Character
     # These will only be called once
     def buttonDown(id)
         case id
-        when Gosu::KB_UP
+        when Gosu::KB_UP, Gosu::KB_W
             jump()
         end
     end
