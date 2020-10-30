@@ -1,5 +1,9 @@
 # Ruby Gosu Game
 
+## How to play
+Start the game by opening the "game.exe" file.
+> If you have ruby installed on your machine, you can also start the game by running a command "ruby game.rb".
+
 ## Controls
 
 Move = AD or <> Arrows
