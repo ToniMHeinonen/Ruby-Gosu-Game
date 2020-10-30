@@ -50,7 +50,7 @@ class Game < Gosu::Window
         # Play music
         song = Gosu::Song.new("../media/music.mp3")
         song.volume = 0.3
-        song.play(true)
+        song.play(true) # Play looping
     end
 
     def startGame
