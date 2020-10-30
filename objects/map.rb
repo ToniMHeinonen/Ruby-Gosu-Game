@@ -13,7 +13,7 @@ end
 
 # Map class holds and draws tiles and gems.
 class Map
-    attr_reader :width, :height, :diamonds, :enemies, :portal
+    attr_reader :width, :height, :diamonds, :enemies, :portal, :finalStage
 
     # Size of tiles in file
     TILE_WIDTH = 60
@@ -28,6 +28,7 @@ class Map
 
         # Load all the stages in to an array
         @stages = Dir.glob('../stages/*').select { |e| File.file? e }
+        @finalStage = false
     end
 
     def startGame(player)
@@ -39,7 +40,8 @@ class Map
 
     def nextStage
         @currentStageIndex += 1
-        createMap(@stages[@currentStageIndex]) if @stages.length > @currentStageIndex
+        createMap(@stages[@currentStageIndex])
+        @finalStage = true if @stages.length == @currentStageIndex + 1
     end
 
     def createMap(filename)

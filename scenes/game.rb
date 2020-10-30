@@ -29,8 +29,12 @@ class Game < Gosu::Window
         @font = Gosu::Font.new(30)
 
         # Init texts
-        @gameOver = Gosu::Image.from_text("GAME OVER", 100, {:align => :center})
-        @restartText = Gosu::Image.from_text("Press R to restart", 70, {:align => :center})
+        largeSize = 100
+        mediumSize = 70
+        @gameOver = Gosu::Image.from_text("GAME OVER", largeSize, {:align => :center})
+        @restartText = Gosu::Image.from_text("Press R to restart", mediumSize, {:align => :center})
+        @gameFinished = Gosu::Image.from_text("Congratulations!", largeSize, {:align => :center})
+        @thanksForPlaying = Gosu::Image.from_text("Thanks for playing", mediumSize, {:align => :center})
 
         # Load background image
         @background = Gosu::Image.new("../media/background.png", tileable: true)
@@ -71,8 +75,25 @@ class Game < Gosu::Window
 
         if (!@player.isAlive)
             # Draw game over
-            @gameOver.draw_rot(WIDTH / 2, HEIGHT / 2 - 100, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5)
-            @restartText.draw_rot(WIDTH / 2, HEIGHT / 2, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5)
+            drawCentered(@gameOver, true)
+            drawCentered(@restartText, false)
+        end
+
+        if (@map.finalStage)
+            # Draw congratulations text
+            drawCentered(@gameFinished, true)
+            drawCentered(@thanksForPlaying, false)
+        end
+    end
+
+    # Draws texts in center of the screen
+    def drawCentered(text, heading)
+        if heading 
+            # Heading
+            text.draw_rot(WIDTH / 2, HEIGHT / 2 - 100, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5)
+        else 
+            # Subheading
+            text.draw_rot(WIDTH / 2, HEIGHT / 2, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5) 
         end
     end
 
