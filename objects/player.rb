@@ -18,6 +18,11 @@ class Player < Character
         @isAlive = true
         @deathUp = nil
 
+        # Sound effects
+        @jumpSound = Gosu::Sample.new("../media/jump.wav")
+        @deathSound = Gosu::Sample.new("../media/death.mp3")
+        @collectSound = Gosu::Sample.new("../media/collect.wav")
+
         super(WIDTH, HEIGHT, map, 0, 0)
         # Start player at facing right
         @dir = :right
@@ -97,6 +102,7 @@ class Player < Character
             @map.solidTileAt?(collision.bottom_left[0], collision.bottom_left[1]) or
             @map.solidTileAt?(collision.bottom_right[0], collision.bottom_right[1])
             @verticalVelocity = -JUMP_HEIGHT
+            @jumpSound.play
         end
     end
 
@@ -108,12 +114,18 @@ class Player < Character
         end
     end
 
+    def die
+        @isAlive = false
+        @deathSound.play
+    end
+
     def checkCollisions
         # Remove diamonds on collision
         before = @map.diamonds.length
         @map.diamonds.reject! do |c|
             if @collision.checkCollision?(c.collision)
                 @score += 1
+                @collectSound.play
                 true
             else
                 false
@@ -122,15 +134,13 @@ class Player < Character
 
         # Die if collision with enemy
         @map.enemies.each do |enemy|
-            if @collision.checkCollision?(enemy.collision)
-                @isAlive = false
-            end
+            die() if @collision.checkCollision?(enemy.collision)
         end
 
         # Change stage on portal collision
         @map.nextStage if @collision.checkCollision?(@map.portal.collision)
 
         # If player falls of the map, die
-        @isAlive = false if @y > Game::HEIGHT + @height
+        die() if @y > Game::HEIGHT + @height
     end
 end
