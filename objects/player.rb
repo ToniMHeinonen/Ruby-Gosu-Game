@@ -28,12 +28,15 @@ class Player < Character
         @dir = :right
     end
 
+    # Positions the player to provided coordinates
+    # Used when stage is changed
     def reposition(x, y)
         @x = x
         @y = y
     end
 
     def update
+        # If player is dead, control the death animation and skip rest
         if !@isAlive
             controlDeathAnimation()
             return
@@ -45,6 +48,7 @@ class Player < Character
     end
 
     def draw
+        # If player is dead, draw only the death animation
         if !@isAlive
             drawDeathAnimation()
             return
@@ -54,6 +58,7 @@ class Player < Character
     end
 
     def controlDeathAnimation
+        # If death animation has just started
         if @deathUp == nil
             @originalY = @y
             @deathUp = true

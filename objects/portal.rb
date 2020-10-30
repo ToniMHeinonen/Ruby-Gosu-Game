@@ -8,13 +8,11 @@ class Portal
     OFFSET = 5
     DRAW_Z = 1
 
-    def initialize(x, y)
+    def initialize(animation, x, y)
         @x, @y = x, y
         @width = WIDTH - OFFSET
         @height = HEIGHT - OFFSET
-        
-        # Load all animations to portal
-        @animation = *Gosu::Image.load_tiles("../media/portal.png", WIDTH, HEIGHT)
+        @animation = animation
         
         @collision = Collision.new(self)
     end

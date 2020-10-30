@@ -23,7 +23,9 @@ class Map
     def initialize()
         @tileset = Gosu::Image.load_tiles("../media/tileset.png", TILE_WIDTH, TILE_HEIGHT, tileable: true)
 
+        # Load images here so they will only be loaded once per game
         @enemyAnimation = *Gosu::Image.load_tiles("../media/enemy_char.png", Enemy::WIDTH, Enemy::HEIGHT)
+        @portalAnimation = *Gosu::Image.load_tiles("../media/portal.png", Portal::WIDTH, Portal::HEIGHT)
         @diamondImg = Gosu::Image.new("../media/diamond.png")
 
         # Load all the stages in to an array
@@ -38,6 +40,7 @@ class Map
         nextStage()
     end
 
+    # Changes the stage to the next one
     def nextStage
         @currentStageIndex += 1
         createMap(@stages[@currentStageIndex])
@@ -70,16 +73,19 @@ class Map
                 when '#'
                     Tiles::Earth
                 when 'E'
-                    # Spawn the enemy at the middle
+                    # Spawn enemy at the middle of position
                     @enemies.push(Enemy.new(@enemyAnimation, self, x * Tiles::TILE_SIZE + Tiles::TILE_CENTER , y * Tiles::TILE_SIZE + Tiles::TILE_CENTER))
                     nil
                 when 'C'
+                    # Spawn diamond at the middle of position
                     @diamonds.push(Collectible.new(@diamondImg, x * Tiles::TILE_SIZE + Tiles::TILE_CENTER, y * Tiles::TILE_SIZE + Tiles::TILE_CENTER))
                     nil
                 when 'P'
-                    @portal = Portal.new(x * Tiles::TILE_SIZE + Tiles::TILE_CENTER, y * Tiles::TILE_SIZE + Tiles::TILE_CENTER)
+                    # Spawn portal at the middle of position
+                    @portal = Portal.new(@portalAnimation, x * Tiles::TILE_SIZE + Tiles::TILE_CENTER, y * Tiles::TILE_SIZE + Tiles::TILE_CENTER)
                     nil
                 when 'U'
+                    # Spawn player at the middle of position
                     @player.reposition(x * Tiles::TILE_SIZE + Tiles::TILE_CENTER, y * Tiles::TILE_SIZE + Tiles::TILE_CENTER)
                     nil
                 else
@@ -95,6 +101,7 @@ class Map
         @enemies.reject! do |e|
             e.y > Game::HEIGHT + 100
         end
+        
         # Update all enemies
         @enemies.each { |e| e.update }
     end

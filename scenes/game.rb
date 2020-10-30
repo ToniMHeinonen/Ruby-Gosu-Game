@@ -28,8 +28,6 @@ class Game < Gosu::Window
         # Load text fonts
         @font = Gosu::Font.new(30)
 
-        
-
         # Init texts
         largeSize = 100
         mediumSize = 70
@@ -53,6 +51,7 @@ class Game < Gosu::Window
         song.play(true) # Play looping
     end
 
+    # Creates a new player and starts the game
     def startGame
         @player = Player.new(@map)
         @map.startGame(@player)

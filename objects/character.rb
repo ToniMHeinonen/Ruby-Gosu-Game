@@ -30,7 +30,6 @@ class Character
             factor = -1.0
         end
         
-        
         @curImage.draw( @x + offsetX,
                         @y - @height - 1 * Math.sin(Gosu.milliseconds / 250.0), # Make slight floating animation up and down
                         @drawZ, 
@@ -97,6 +96,7 @@ class Character
             return
         end
 
+        # Check at the provided future position
         @collision.checkPosition(x, y)
 
         @collision.collisions.each do |col|
