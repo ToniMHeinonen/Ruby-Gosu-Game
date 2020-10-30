@@ -13,12 +13,12 @@ end
 
 # Map class holds and draws tiles and gems.
 class Map
-    attr_reader :width, :height, :diamonds, :enemies, :portal, :finalStage
+    attr_reader :width, :height, :diamonds, :diamondsAmount, :enemies, :portal, :finalStage
 
     # Size of tiles in file
     TILE_WIDTH = 60
     TILE_HEIGHT = 60
-    STARTING_STAGE = 1
+    STARTING_STAGE = 1 # Used for testing different stages
   
     def initialize()
         @tileset = Gosu::Image.load_tiles("../media/tileset.png", TILE_WIDTH, TILE_HEIGHT, tileable: true)
@@ -34,6 +34,7 @@ class Map
     end
 
     def startGame(player)
+        @diamondsAmount = 0 # Reset collected diamonds
         @player = player
         # -2 since index starts at 0 and nextStage() adds +1 to the value
         @currentStageIndex = STARTING_STAGE - 2
@@ -79,6 +80,7 @@ class Map
                 when 'C'
                     # Spawn diamond at the middle of position
                     @diamonds.push(Collectible.new(@diamondImg, x * Tiles::TILE_SIZE + Tiles::TILE_CENTER, y * Tiles::TILE_SIZE + Tiles::TILE_CENTER))
+                    @diamondsAmount += 1
                     nil
                 when 'P'
                     # Spawn portal at the middle of position
@@ -101,7 +103,7 @@ class Map
         @enemies.reject! do |e|
             e.y > Game::HEIGHT + 100
         end
-        
+
         # Update all enemies
         @enemies.each { |e| e.update }
     end

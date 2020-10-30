@@ -29,12 +29,14 @@ class Game < Gosu::Window
         @font = Gosu::Font.new(30)
 
         # Init texts
-        largeSize = 100
-        mediumSize = 70
-        @gameOver = Gosu::Image.from_text("GAME OVER", largeSize, {:align => :center})
-        @restartText = Gosu::Image.from_text("Press R to restart", mediumSize, {:align => :center})
-        @gameFinished = Gosu::Image.from_text("Congratulations!", largeSize, {:align => :center})
-        @thanksForPlaying = Gosu::Image.from_text("Thanks for playing", mediumSize, {:align => :center})
+        @largeSize = 100
+        @mediumSize = 70
+        @smallSize = 40
+        @gameOver = Gosu::Image.from_text("GAME OVER", @largeSize, {:align => :center})
+        @restartText = Gosu::Image.from_text("Press R to restart", @mediumSize, {:align => :center})
+        @gameFinished = Gosu::Image.from_text("Congratulations!", @largeSize, {:align => :center})
+        @thanksForPlaying = Gosu::Image.from_text("Thanks for playing", @mediumSize, {:align => :center})
+        @endScore = nil
 
         # Load background image
         @background = Gosu::Image.new("../media/background.png", tileable: true)
@@ -81,25 +83,37 @@ class Game < Gosu::Window
 
         if (!@player.isAlive)
             # Draw game over
-            drawCentered(@gameOver, true)
-            drawCentered(@restartText, false)
+            drawCentered(@gameOver, @largeSize)
+            drawCentered(@restartText, @mediumSize)
         end
 
         if (@map.finalStage)
             # Draw congratulations text
-            drawCentered(@gameFinished, true)
-            drawCentered(@thanksForPlaying, false)
+            drawCentered(@gameFinished, @largeSize)
+            drawCentered(@thanksForPlaying, @mediumSize)
+            createEndScoreText() if @endScore == nil
+            drawCentered(@endScore, @smallSize)
         end
     end
 
+    def createEndScoreText
+        score = @player.score
+        all = @map.diamondsAmount
+        @endScore = Gosu::Image.from_text("#{score} / #{all} diamonds collected", @smallSize, {:align => :center})
+    end
+
     # Draws texts in center of the screen
-    def drawCentered(text, heading)
-        if heading 
-            # Heading
+    def drawCentered(text, size)
+        case size
+        when @largeSize
+            # Draw on top
             text.draw_rot(WIDTH / 2, HEIGHT / 2 - 100, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5)
-        else 
-            # Subheading
-            text.draw_rot(WIDTH / 2, HEIGHT / 2, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5) 
+        when @mediumSize
+            # Draw in the middle
+            text.draw_rot(WIDTH / 2, HEIGHT / 2, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5)
+        when @smallSize
+            # Draw below
+            text.draw_rot(WIDTH / 2, HEIGHT / 2 + 75, DRAW_ORDER::UI, center_x = 0.5, center_y = 0.5)
         end
     end
 
