@@ -13,15 +13,15 @@ class Player < Character
 
     def initialize(map)
         # Load all animations to player character
-        @standing, @walk1, @walk2, @jump = *Gosu::Image.load_tiles("../media/player_char.png", WIDTH, HEIGHT)
+        @standing, @walk1, @walk2, @jump = *Gosu::Image.load_tiles("media/player_char.png", WIDTH, HEIGHT)
         @score = 0
         @isAlive = true
         @deathUp = nil
 
         # Sound effects
-        @jumpSound = Gosu::Sample.new("../media/jump.wav")
-        @deathSound = Gosu::Sample.new("../media/death.mp3")
-        @collectSound = Gosu::Sample.new("../media/collect.wav")
+        @jumpSound = Gosu::Sample.new("media/jump.wav")
+        @deathSound = Gosu::Sample.new("media/death.mp3")
+        @collectSound = Gosu::Sample.new("media/collect.wav")
 
         super(WIDTH, HEIGHT, map, 0, 0)
         # Start player at facing right

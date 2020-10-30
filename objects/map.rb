@@ -21,15 +21,15 @@ class Map
     STARTING_STAGE = 1 # Used for testing different stages
   
     def initialize()
-        @tileset = Gosu::Image.load_tiles("../media/tileset.png", TILE_WIDTH, TILE_HEIGHT, tileable: true)
+        @tileset = Gosu::Image.load_tiles("media/tileset.png", TILE_WIDTH, TILE_HEIGHT, tileable: true)
 
         # Load images here so they will only be loaded once per game
-        @enemyAnimation = *Gosu::Image.load_tiles("../media/enemy_char.png", Enemy::WIDTH, Enemy::HEIGHT)
-        @portalAnimation = *Gosu::Image.load_tiles("../media/portal.png", Portal::WIDTH, Portal::HEIGHT)
-        @diamondImg = Gosu::Image.new("../media/diamond.png")
+        @enemyAnimation = *Gosu::Image.load_tiles("media/enemy_char.png", Enemy::WIDTH, Enemy::HEIGHT)
+        @portalAnimation = *Gosu::Image.load_tiles("media/portal.png", Portal::WIDTH, Portal::HEIGHT)
+        @diamondImg = Gosu::Image.new("media/diamond.png")
 
         # Load all the stages in to an array
-        @stages = Dir.glob('../stages/*').select { |e| File.file? e }
+        @stages = Dir.glob('stages/*').select { |e| File.file? e }
         @finalStage = false
     end
 
@@ -50,7 +50,7 @@ class Map
 
     def createMap(filename)
         # Load all lines from the given file
-        lines = File.readlines("../stages/#{filename}").map { |line| line.chomp }
+        lines = File.readlines(filename).map { |line| line.chomp }
         # Height is the size of rows
         @height = lines.size
         # Width is the lenght of first row

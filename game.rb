@@ -2,8 +2,8 @@
 
 require "gosu"
 
-require_relative "../objects/player"
-require_relative "../objects/map"
+require_relative "objects/player"
+require_relative "objects/map"
 
 module DRAW_ORDER
     BACKGROUND = 0
@@ -39,7 +39,7 @@ class Game < Gosu::Window
         @endScore = nil
 
         # Load background image
-        @background = Gosu::Image.new("../media/background.png", tileable: true)
+        @background = Gosu::Image.new("media/background.png", tileable: true)
         # Initialize map
         @map = Map.new
         startGame()
@@ -48,7 +48,7 @@ class Game < Gosu::Window
         @cameraY = @map.height * Tiles::TILE_SIZE - HEIGHT
 
         # Play music
-        song = Gosu::Song.new("../media/music.mp3")
+        song = Gosu::Song.new("media/music.mp3")
         song.volume = 0.2
         song.play(true) # Play looping
     end
