@@ -28,6 +28,8 @@ class Game < Gosu::Window
         # Load text fonts
         @font = Gosu::Font.new(30)
 
+        
+
         # Init texts
         largeSize = 100
         mediumSize = 70
@@ -44,6 +46,11 @@ class Game < Gosu::Window
         # Setup camera
         @cameraX = 0
         @cameraY = @map.height * Tiles::TILE_SIZE - HEIGHT
+
+        # Play music
+        song = Gosu::Song.new("../media/music.mp3")
+        song.volume = 0.3
+        song.play(true)
     end
 
     def startGame
